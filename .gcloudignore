@@ -1,0 +1,9 @@
+.git
+.gitignore
+.gcloudignore
+venv
+__pycache__/
+*.pyc
+.idea.bkup
+*.sqlite3
+*.rdb

@@ -1,0 +1,22 @@
+env: standard
+runtime: python37
+instance_class: F1
+entrypoint: gunicorn -c gunicorn.conf.py -b :$PORT main:app
+
+inbound_services:
+  - warmup
+
+env_variables:
+  ABACUS_ENV: ''
+  ABACUS_GAE_ENV: standard
+  ABACUS_GAE_REGION: us-central1
+
+automatic_scaling:
+  max_idle_instances: 1
+  max_concurrent_requests: 2
+
+handlers:
+  - url: .*
+    script: auto
+    secure: always
+    redirect_http_response_code: 301
