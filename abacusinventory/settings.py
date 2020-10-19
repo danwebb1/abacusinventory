@@ -1,10 +1,6 @@
 import os
-from csg.environment.client import EnvironmentClient
 from corsheaders.defaults import default_headers
-from csg.libs.django.settings.databases.csgapi import DATABASE_DEV, DATABASE_PRODUCTION, DATABASE_STAGING, DATABASE_QA
-
-environment_client = EnvironmentClient()
-
+from abacusinventory.config.database import DATABASE_DEV
 ROOT_URLCONF = 'abacusinventory.urls'
 WSGI_APPLICATION = 'abacusinventory.wsgi.application'
 ASGI_APPLICATION = 'abacusinventory.asgi.application'
@@ -35,18 +31,14 @@ TEMPLATES = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'api.middleware.csrf_exempt.CsrfExemptSessionAuthentication',
-    ),
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ]
+        #'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': []
+        #'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        #'rest_framework.authentication.SessionAuthentication',
+        #'rest_framework.authentication.BasicAuthentication',
 }
-
-
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -58,6 +50,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 STATIC_URL_DEV = '/static/'
 STATIC_URL_QA = 'https://storage.googleapis.com/abacusinventory-qa-static/'
 STATIC_URL_STAGING = 'https://storage.googleapis.com/abacusinventory-staging-static/'
@@ -66,6 +61,7 @@ STATIC_URL_PROD = 'https://storage.googleapis.com/abacusinventory-static/'
 ################################################################################
 # ENVIRONMENT SPECIFIC SETTINGS
 ################################################################################
+"""
 if EnvironmentClient.is_qa():
     DEBUG = True
     STATIC_URL = STATIC_URL_QA
@@ -89,24 +85,16 @@ elif EnvironmentClient.is_staging():
         'x-api-key',
     ]
 elif EnvironmentClient.is_production():
-    DEBUG = False
-    STATIC_URL = STATIC_URL_PROD
-    DATABASES = {
-        'default': DATABASE_PRODUCTION
-    }
-    CORS_ORIGIN_WHITELIST = [
-        "https://abacusinventory.appspot.com",
-        "https://api.abacus.dental",
-    ]
-    CORS_ALLOW_HEADERS = list(default_headers) + [
-        'x-api-key',
-    ]
-else:
-    DEBUG = True
-    STATIC_URL = STATIC_URL_DEV
-    SECURE_SSL_REDIRECT = False
-    DATABASES = {'default': DATABASE_DEV}
-    CORS_ORIGIN_ALLOW_ALL = True
-    CORS_ALLOW_HEADERS = list(default_headers) + [
-        'x-api-key',
-    ]
+"""
+DATABASES = {
+    'default': DATABASE_DEV
+}
+CORS_ORIGIN_WHITELIST = [
+    "https://abacus-app-284522.uc.r.appspot.com",
+    "https://api.abacus.dental",
+]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'x-api-key',
+]
+SECURE_SSL_REDIRECT = False

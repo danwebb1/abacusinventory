@@ -130,3 +130,6 @@ dmypy.json
 
 # PyCharm
 .idea/
+
+#Firebase auth
+abacusinventory/config/keyfile.json
