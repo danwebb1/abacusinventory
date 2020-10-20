@@ -8,6 +8,7 @@ class Item(models.Model):
     item_description = models.CharField(max_length=240)
 
     class Meta:
+        app_label = "Item"
         verbose_name = "Item"
         verbose_name_plural = "Items"
 
@@ -19,10 +20,16 @@ class Supply(models.Model):
     amount = models.IntegerField(max_length=200)
     date = models.DateField()
 
+    class Meta:
+        app_label = "Supply"
+
 
 class Upc(models.Model):
     id = models.AutoField(primary_key=True)
     upc = models.CharField(max_length=50)
+
+    class Meta:
+        app_label = "Upc"
 
 
 class UpcList(models.Model):
@@ -31,7 +38,13 @@ class UpcList(models.Model):
     item_id = models.ForeignKey(Item, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    class Meta:
+        app_label = "UpcList"
+
 
 class UpcMap(models.Model):
     upc = models.ForeignKey(Upc, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
+
+    class Meta:
+        app_label = "UpcMap"

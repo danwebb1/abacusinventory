@@ -15,12 +15,14 @@ ALLOWED_HOSTS = [
 ]
 
 INSTALLED_APPS = [
+    'api.config',
     'rest_framework',
     'django.contrib.staticfiles',
     'django.contrib.contenttypes',
     'django.contrib.auth',
     'api',
     'corsheaders',
+    'firebase_auth',
 ]
 
 TEMPLATES = [
@@ -34,10 +36,10 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         #'rest_framework.permissions.IsAuthenticated',
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES': []
-        #'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        #'rest_framework.authentication.SessionAuthentication',
-        #'rest_framework.authentication.BasicAuthentication',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'firebase_auth.authentication.FirebaseAuthentication',
+    ),
 }
 
 MIDDLEWARE = [

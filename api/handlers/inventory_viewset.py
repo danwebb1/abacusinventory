@@ -4,7 +4,7 @@ import typing
 from django.shortcuts import render
 from ..definitions import GET, POST
 from rest_framework.decorators import action
-from abacusinventory.api.models.inventory import Supply, Item, Upc, UpcList, UpcMap
+from api.models.inventory import Supply, Item, Upc, UpcList, UpcMap
 from rest_framework import viewsets
 from rest_framework.response import Response
 
