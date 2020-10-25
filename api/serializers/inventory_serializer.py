@@ -1,8 +1,9 @@
 from rest_framework import serializers
-from abacusinventory.api.models.inventory import Supply, Item, UpcMap, UpcList, Upc
+from ..models.inventory import Supply, Item, UpcMap, UpcList, Upc
 
 
 class SupplySerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Supply
         fields = ['user_id', 'item_id', 'amount', 'date']
