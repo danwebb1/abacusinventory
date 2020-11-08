@@ -23,6 +23,17 @@ class InventoryViewSet(viewsets.ViewSet):
         else:
             return HttpResponse(status=401)
 
+    @action(methods=[POST], detail=False)
+    def set_initial_inventory(self, request: Request):
+
+        user = get_user_id_from_request(request)
+        if user:
+            supply = Supply()
+            inventory = supply.get_supply(user_id=user)
+            return JsonResponse({"supply": list(inventory)})
+        else:
+            return HttpResponse(status=401)
+
 
 if typing.TYPE_CHECKING:
     from rest_framework.request import Request
