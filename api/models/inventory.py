@@ -5,7 +5,7 @@ from .users import User
 class Item(models.Model):
     id = models.AutoField(primary_key=True)
     item_name = models.CharField(max_length=75)
-    item_description = models.CharField(max_length=240)
+    item_desc = models.CharField(max_length=240)
     item_code = models.CharField(max_length=50)
 
     class Meta:
@@ -13,6 +13,15 @@ class Item(models.Model):
         verbose_name = "Item"
         verbose_name_plural = "Items"
         db_table = 'item'
+
+    @staticmethod
+    def get_item_id(item):
+        try:
+            item_id = Item.objects.get(item_code=item)
+        except ValueError:
+            raise ValueError('No item found')
+
+        return item_id if item_id else False
 
 
 class Supply(models.Model):
