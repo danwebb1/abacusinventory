@@ -61,34 +61,6 @@ STATIC_URL_QA = 'https://storage.googleapis.com/abacusinventory-qa-static/'
 STATIC_URL_STAGING = 'https://storage.googleapis.com/abacusinventory-staging-static/'
 STATIC_URL_PROD = 'https://storage.googleapis.com/abacusinventory-static/'
 
-################################################################################
-# ENVIRONMENT SPECIFIC SETTINGS
-################################################################################
-"""
-if EnvironmentClient.is_qa():
-    DEBUG = True
-    STATIC_URL = STATIC_URL_QA
-    DATABASES = {'default': DATABASE_QA}
-    CORS_ORIGIN_WHITELIST = [
-        "https://abacusinventory-qa.appspot.com",
-        "https://api-qa.abacus.dental"
-    ]
-    CORS_ALLOW_HEADERS = list(default_headers) + [
-        'x-api-key',
-    ]
-elif EnvironmentClient.is_staging():
-    DEBUG = False
-    STATIC_URL = STATIC_URL_STAGING
-    DATABASES = {'default': DATABASE_STAGING}
-    CORS_ORIGIN_WHITELIST = [
-        "https://abacusinventory-staging.appspot.com",
-        "https://api-staging.abacus.dental"
-    ]
-    CORS_ALLOW_HEADERS = list(default_headers) + [
-        'x-api-key',
-    ]
-elif EnvironmentClient.is_production():
-"""
 DATABASES = {
     'default': DATABASE_DEV
 }
