@@ -95,6 +95,7 @@ DATABASES = {
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
     "https://api.abacus.dental",
+    "https://my.abacus.dental"
 ]
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'HTTP-AUTHORIZATION',
