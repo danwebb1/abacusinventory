@@ -5,7 +5,7 @@ SQL_ENGINE = 'django.db.backends.mysql'
 
 #SQL_HOST_DEV = '34.66.101.207'
 SQL_HOST_DEV = '127.0.0.1'
-SQL_UNIX_SOCKET = 'abacus-app-284522:us-central1:abacus-inventory'
+SQL_UNIX_SOCKET = '/cloudsql/abacus-app-284522:us-central1:abacus-inventory'
 #SQL_HOST_QA
 #SQL_HOST_STAGING
 #SQL_HOST_PROD
