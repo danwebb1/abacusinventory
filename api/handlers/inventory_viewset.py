@@ -49,6 +49,45 @@ class InventoryViewSet(viewsets.ViewSet):
         else:
             return HttpResponse(status=401)
 
+    @action(methods=[POST], detail=False)
+    def get_upc(self, request: Request):
+
+        upc = Upc()
+        upc_codes = upc.get_upc()
+        return JsonResponse({"codes": list(upc_codes)})
+
+    @action(methods=[POST], detail=False)
+    def submit_upc(self, request: Request):
+        user = get_user_id_from_request(request)
+        code_list = json.loads(request.data.get('upc_list', None))
+        if user and code_list:
+            user = User(id=user)
+
+            for code in code_list:
+                upc_id = Upc.get_upc_id(code.get('upc', None))
+                upc_id = Upc(id=upc_id.id)
+                for i in range(1, int(code.get('amount', None)) + 1):
+                    upc_list = UpcList(
+                        user_id=user,
+                        upc_id=upc_id,
+                        date=datetime.now()
+                    )
+                    upc_list.save(force_insert=True)
+            return Response(status=200)
+        else:
+            return HttpResponse(status=401)
+
+    @action(methods=[POST], detail=False)
+    def get_upc_list(self, request: Request):
+
+        user = get_user_id_from_request(request)
+        if user:
+            upc_list = UpcList()
+            upc_list = upc_list.get_upc_list(user_id=user)
+            return JsonResponse({"upc_list": list(upc_list)})
+        else:
+            return HttpResponse(status=401)
+
 
 if typing.TYPE_CHECKING:
     from rest_framework.request import Request

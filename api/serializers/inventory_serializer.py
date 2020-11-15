@@ -11,23 +11,23 @@ class SupplySerializer(serializers.ModelSerializer):
 
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Supply
+        model = Item
         fields = ['item_name', 'item_description']
 
 
 class UpcSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Supply
+        model = Upc
         fields = ['upc']
 
 
 class UpcMapSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Supply
+        model = UpcMap
         fields = ['upc', 'item']
 
 
 class UpcListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Supply
-        fields = ['upc_id', 'item_id', 'user_id']
+        model = UpcList
+        fields = ['user_id', 'upc_id', 'date']
