@@ -50,6 +50,37 @@ class Supply(models.Model):
 
         return inventory
 
+    @staticmethod
+    def update_supply(user, upc_id):
+        """
+        Take the upc code and update the supply based on the UPC map values
+        :param user: User
+        :param upc_id: upc code id
+        :return: None
+        """
+        update_supply = False
+        _map = UpcMap.get_upc_map(user)
+        code_list = []
+        for code in _map:
+            upc = Upc.get_upc_id(code.get('upc__upc', ''))
+            if upc.id == upc_id:
+                update_supply = True
+                item = Item.get_item_id(code.get('item__item_code'))
+                amount = code.get('amount', 0)
+                old_amount = Supply.objects.get(user_id=user, item_id=item)
+                new_amount = old_amount.amount - amount
+                if new_amount >= 0:
+                    to_update = Supply.objects.get(user_id=user, item_id=item)
+                    to_update.amount = new_amount
+                    to_update.save()
+                else:
+                    update = Supply.objects.filter(user_id=user, item_id=item).update(amount=0)
+
+        if update_supply:
+            return update
+        else:
+            return update_supply
+
 
 class Upc(models.Model):
     id = models.AutoField(primary_key=True)
@@ -96,7 +127,7 @@ class UpcList(models.Model):
         :param user_id: User
         :return: query set of upc_list
         """
-        upc_list = UpcList.objects.filter(user_id=user_id).order_by('id')\
+        upc_list = UpcList.objects.filter(user_id=user_id).order_by('-id')\
             .values('upc_id__upc',
                     'upc_id__desc',
                     'date')[:8]
@@ -105,9 +136,28 @@ class UpcList(models.Model):
 
 
 class UpcMap(models.Model):
-    upc = models.ForeignKey(Upc, on_delete=models.CASCADE)
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    id = models.AutoField(primary_key=True)
+    upc = models.ForeignKey(Upc, on_delete=models.CASCADE, db_column='upc')
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, db_column='item')
+    user_id = models.ForeignKey(User, related_name="users", on_delete=models.CASCADE, db_column='user_id')
+    amount = models.IntegerField(max_length=200)
 
     class Meta:
-        app_label = 'UpcMap'
-        db_table = 'upc_map'
+        app_label = 'ItemUpcMap'
+        db_table = 'item_upc_map'
+
+    @staticmethod
+    def get_upc_map(user_id: User):
+        """
+        get the map list for the portal
+        :param user_id: User
+        :return: query set of upc_list
+        """
+        upc_map = UpcMap.objects.filter(user_id=user_id).order_by('id')\
+            .values('upc__upc',
+                    'upc__desc',
+                    'item__item_code',
+                    'item__item_name',
+                    'amount')
+
+        return upc_map
