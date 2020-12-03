@@ -40,8 +40,10 @@ class InventoryViewSet(viewsets.ViewSet):
                 item_id = Item(id=item_id.id)
                 if Supply.objects.filter(user_id=user, item_id=item_id):
                     old_amount = Supply.objects.get(user_id=user, item_id=item_id)
-                    new_amount = old_amount.amount + item.get('amount', 0)
-                    Supply.objects.filter(user_id=user, item_id=item_id).update(new_amount)
+                    new_amount = old_amount.amount + int(item.get('amount', 0))
+                    to_update = Supply.objects.get(user_id=user, item_id=item_id)
+                    to_update.amount = new_amount
+                    to_update.save()
                 else:
                     inventory_item = Supply.objects.create(
                         user_id=user,
@@ -121,7 +123,6 @@ class InventoryViewSet(viewsets.ViewSet):
                     to_update = UpcMap.objects.get(upc=upc_id, user_id=user, item=item_id)
                     to_update.amount = code.get('amount')
                     to_update.save()
-                    test = 1
                 elif not UpcMap.objects.filter(upc=upc_id, user_id=user, item=item_id):
                     upc_list = UpcMap(
                         user_id=user,
