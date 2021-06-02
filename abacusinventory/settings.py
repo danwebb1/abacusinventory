@@ -5,7 +5,7 @@ ROOT_URLCONF = 'abacusinventory.urls'
 WSGI_APPLICATION = 'abacusinventory.wsgi.application'
 ASGI_APPLICATION = 'abacusinventory.asgi.application'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = '%^aiul=h!@_qf-quubrcu%v+2kwad$u4@f71q+spw#$5rh^lbi'
+SECRET_KEY = ''
 DEBUG = False
 LOGGING_CONFIG = None  # Logging to allow for default use of CSG logger
 LOCKDOWN_ADMIN = False
